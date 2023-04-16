@@ -25,7 +25,7 @@ namespace Timesheets_System.Models.DAO
                                     "FROM screen_auth_tb " + 
                                     "WHERE auth_group_id = @Auth_Group_ID AND screen_id = @Screen_ID AND allowed_to_open = @Allowed_To_Open";
 
-            var parameters = new DynamicParameters();
+            DynamicParameters parameters = new DynamicParameters();
             parameters.Add("Auth_Group_ID", _screenAuthDTO.Auth_Group_ID);
             parameters.Add("Screen_ID", _screenAuthDTO.Screen_ID);
             parameters.Add("Allowed_To_Open", _screenAuthDTO.Allowed_To_Open);

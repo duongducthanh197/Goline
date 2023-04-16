@@ -100,14 +100,17 @@
     <Compile Include="Common\Util\StringUtil.cs" />
     <Compile Include="Controllers\ScreenAuthController.cs" />
     <Compile Include="Controllers\TimesheetsController.cs" />
+    <Compile Include="Controllers\TimesheetsDetailsController.cs" />
     <Compile Include="Controllers\TimesheetsRawDataController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Common\Const\CONSTANTS.cs" />
     <Compile Include="Models\DAO\ScreenAuthDAO.cs" />
     <Compile Include="Models\DAO\TimesheetsDAO.cs" />
+    <Compile Include="Models\DAO\TimesheetsDetailsDAO.cs" />
     <Compile Include="Models\DAO\TimesheetsRawDataDAO.cs" />
     <Compile Include="Models\DAO\UserDAO.cs" />
     <Compile Include="Models\DTO\ScreenAuthDTO.cs" />
+    <Compile Include="Models\DTO\TimesheetsDetailsDTO.cs" />
     <Compile Include="Models\DTO\TimesheetsDTO.cs" />
     <Compile Include="Models\DTO\TimesheetsRawDataDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />

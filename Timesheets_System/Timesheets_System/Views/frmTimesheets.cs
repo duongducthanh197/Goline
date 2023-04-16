@@ -12,14 +12,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Timesheets_System.Controllers;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
 using Timesheets_System.Models.DTO;
 
 namespace Timesheets_System.Views
 {
     public partial class frmTimesheets : Form
     {
+        UserController _userController = new UserController();
         TimesheetsController _timesheetsController = new TimesheetsController();
+        TimesheetsDetailsController _timesheetsDetailsController = new TimesheetsDetailsController();
         TimesheetsRawDataController _timesheetsRawDataController = new TimesheetsRawDataController();
 
         public frmTimesheets()
@@ -82,22 +83,24 @@ namespace Timesheets_System.Views
                     return;
                 }
 
+                // Create a new instance of the Excel Application
+                Excel.Application excelApp = new Excel.Application();
+
+                // Hide the Excel Application window from the user
+                excelApp.Visible = false;
+
+                // Open the Excel workbook
+                Excel.Workbook workbook = excelApp.Workbooks.Open(dataFile);
+
                 try
                 {
-                    // Create a new instance of the Excel Application
-                    Excel.Application excelApp = new Excel.Application();
-
-                    // Hide the Excel Application window from the user
-                    excelApp.Visible = false;
-
-                    // Open the Excel workbook
-                    Excel.Workbook workbook = excelApp.Workbooks.Open(dataFile);
-
                     //Open worksheet
                     Excel.Worksheet worksheet = (Excel.Worksheet)workbook.Worksheets[1];
                     Excel.Range usedRange = worksheet.UsedRange;
                     int lastRow = usedRange.Rows.Count;
+
                     List<TimesheetsRawDataDTO> timesheetRawDataList = new List<TimesheetsRawDataDTO>();
+                    TimesheetsRawDataDTO timesheetRawData = new TimesheetsRawDataDTO();
 
                     //Loop excel file by row
                     for (int index = 1; index <= lastRow; index++)
@@ -107,13 +110,12 @@ namespace Timesheets_System.Views
                             String fullname = worksheet.Cells[index, 1].Value;
                             DateTime inOutTime = DateTime.Parse(worksheet.Cells[index, 3].Value);
 
-                            //Create and assign data for timesheets raw data object
-                            TimesheetsRawDataDTO timesheetRawData = new TimesheetsRawDataDTO();
+                            //Assign data for timesheets raw data object
                             timesheetRawData.Fullname = fullname;
                             timesheetRawData.In_Out_Time = inOutTime;
 
                             //Add timesheets raw data to list
-                            timesheetRawDataList.Add(timesheetRawData);    
+                            timesheetRawDataList.Add(timesheetRawData);
 
                         }
                         catch { }
@@ -130,10 +132,61 @@ namespace Timesheets_System.Views
                     Marshal.ReleaseComObject(workbook);
                     Marshal.ReleaseComObject(excelApp);
 
+                    //Convert raw data(timesheets_raw_data_tb) to details data(timesheets_details_tb)
+                    //
+                    //   FULLNAME |               INOUTTIME                                                   FULLNAME  |            DATE      |               CHECKIN           |                   CHECKOUT     |   WORKINGHOURS 
+                    //Hoàng Văn A |  2022 - 12 - 26 09:45:27               =>                       Hoàng Văn A |   2022 - 12 - 26 |  2022 - 12 - 26 09:45:27  |  2022 - 12 - 26 13:09:03   |               5.4
+                    //Hoàng Văn A |  2022 - 12 - 26 11:26:42                                           Hoàng Văn A |   2022 - 12 - 27 |  2022 - 12 - 27 07:43:39  |  2022 - 12 - 27 14:08:01   |               6.4
+                    //Hoàng Văn A |  2022 - 12 - 26 12:05:30
+                    //Hoàng Văn A |  2022 - 12 - 26 13:09:03
+                    //Hoàng Văn A |  2022 - 12 - 27 07:43:39                                 
+                    //Hoàng Văn A |  2022 - 12 - 27 08:05:50
+                    //Hoàng Văn A |  2022 - 12 - 27 12:19:18
+                    //Hoàng Văn A |  2022 - 12 - 27 11:33:50
+                    //Hoàng Văn A |  2022 - 12 - 27 14:08:01
+                    _timesheetsRawDataController.ConvertRawDataToDetailsData();
+
+                    foreach (TimesheetsRawDataDTO _timesheetsRawDataDTO in timesheetRawDataList)
+                    {
+                        UserDTO _userDTO = _userController.GetUserByFullname(_timesheetsRawDataDTO.Fullname);
+
+                        //Check fullname from raw data exist in user_tb
+                        //Exist         => continue
+                        //Not exist  => Unnesscessary data
+                        if (_userDTO != null)
+                        {
+                            //Create timesheets object to search
+                            TimesheetsDTO _timesheetsDTO = new TimesheetsDTO();
+                            _timesheetsDTO.Fullname = _userDTO.Fullname;
+                            _timesheetsDTO.Year = _timesheetsRawDataDTO.In_Out_Time.Year;
+                            _timesheetsDTO.Month = _timesheetsRawDataDTO.In_Out_Time.Month;
+
+                            if (_timesheetsController.TimesheetsExist(_timesheetsDTO) == false)
+                            {
+                                _timesheetsDTO.Username = _userDTO.Username;
+
+                                //Insert new row to timekeeping_tb EX: 1, Nguyễn Văn A, 2023, 02
+                                _timesheetsController.InsertNewTimesheets(_timesheetsDTO);
+                            }
+
+                            TimesheetsDetailsDTO _timesheetsDetailsDTO = _timesheetsDetailsController.GetDetailsByFullnameAndDate(_timesheetsDTO);
+                            if(_timesheetsde)
+                        }
+                    }
+
                     MessageBox.Show("Hoàn tất", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
+                    // Save and close the Excel file
+                    workbook.Save();
+                    workbook.Close();
+                    excelApp.Quit();
+
+                    // Release the resources used by the workbook and Excel Application
+                    Marshal.ReleaseComObject(workbook);
+                    Marshal.ReleaseComObject(excelApp);
+
                     MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

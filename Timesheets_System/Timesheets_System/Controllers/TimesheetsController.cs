@@ -23,5 +23,15 @@ namespace Timesheets_System.Controllers
         {
             return _timesheetsDAO.GetTimesheetsList(year, month);
         }
+
+        public bool TimesheetsExist(TimesheetsDTO _timesheetDTO)
+        {
+            return _timesheetsDAO.TimesheetsExist(_timesheetDTO);
+        }
+
+        public void InsertNewTimesheets(TimesheetsDTO _timesheetsDTO)
+        {
+            _timesheetsDAO.InsertNewTimesheets(_timesheetsDTO);
+        }
     }
 }

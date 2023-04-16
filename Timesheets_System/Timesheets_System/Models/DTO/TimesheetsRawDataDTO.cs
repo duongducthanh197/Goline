@@ -11,7 +11,7 @@ namespace Timesheets_System.Models.DTO
         public TimesheetsRawDataDTO() { }
 
         public string Fullname { get; set; }
-        public DateTime? In_Out_Time { get; set; }
+        public DateTime In_Out_Time { get; set; }
 
     }
 }

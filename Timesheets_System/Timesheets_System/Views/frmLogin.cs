@@ -39,7 +39,7 @@ namespace Timesheets_System.Views
                 if (!ElementCheck()) return;
 
                 //Get user by username
-                UserDTO _userDTO = _userController.getUserByID(txt_Username.Text);
+                UserDTO _userDTO = _userController.GetUserByID(txt_Username.Text);
 
                 //Check username is exist
                 if (_userDTO == null)

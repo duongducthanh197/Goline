@@ -25,5 +25,18 @@ namespace Timesheets_System.Models.DAO
             string query = "INSERT INTO Timesheets_raw_data_tb(fullname, in_out_time) VALUES (@Fullname, @In_Out_Time)";
             _dbConnection.Execute(query, rawData);
         }
+
+
+        public void ConvertRawDataToDetailsData()
+        {
+            string query = @"INSERT INTO timesheets_details_tb(fullname, date, checkin, checkout, working_hours) " +
+                                    "SELECT fullname, CAST(in_out_time AS DATE) AS date, MIN(in_out_time) AS checkin, MAX(in_out_time)AS checkout, " +
+                                    "CASE WHEN CAST(EXTRACT(EPOCH FROM (MAX(in_out_time) - MIN(in_out_time))) / 3600 AS NUMERIC(10,1)) > 8 THEN 8 " +
+                                    "ELSE CAST(EXTRACT(EPOCH FROM (MAX(in_out_time) - MIN(in_out_time))) / 3600 AS NUMERIC(10,1)) " +
+                                    "END AS duration " +
+                                    "FROM  timesheets_raw_data_tb " +
+                                    "GROUP BY fullname, CAST(in_out_time AS DATE)";
+            _dbConnection.Execute(query);
+        }
     }
 }

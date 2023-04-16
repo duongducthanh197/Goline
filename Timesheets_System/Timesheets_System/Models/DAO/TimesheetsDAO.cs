@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Office.Interop.Excel;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,6 @@ namespace Timesheets_System.Models.DAO
             return _dbConnection.Query<int>(query).ToList();
         }
 
-
         public List<TimesheetsDTO> GetTimesheetsList(int year, int month)
         {
 
@@ -45,7 +45,33 @@ namespace Timesheets_System.Models.DAO
             parameters.Add("month", month);
 
             return _dbConnection.Query<TimesheetsDTO>(query, parameters).ToList();
+        }
 
+        public bool TimesheetsExist(TimesheetsDTO _timesheetsDTO)
+        {
+            string query = @"SELECT COUNT(fullname) " +
+                                    "FROM timesheets_tb " +
+                                    "WHERE fullname = @fullname AND year = @year AND month = @month";
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("fullname", _timesheetsDTO.Fullname);
+            parameters.Add("year", _timesheetsDTO.Year);
+            parameters.Add("month", _timesheetsDTO.Month);
+
+            return _dbConnection.ExecuteScalar<bool>(query, parameters);
+        }
+
+        public void InsertNewTimesheets(TimesheetsDTO _timesheetsDTO)
+        {
+            string query = @"INSERT INTO Timekeeping_tb (username, fullname, year, month) VALUES (@username, @fullname, @year, @month)";
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("username", _timesheetsDTO.Username);
+            parameters.Add("fullname", _timesheetsDTO.Fullname);
+            parameters.Add("year", _timesheetsDTO.Year);
+            parameters.Add("month", _timesheetsDTO.Month);
+
+            _dbConnection.Execute(query, parameters);
         }
     }
 }

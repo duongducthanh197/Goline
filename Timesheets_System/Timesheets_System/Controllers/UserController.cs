@@ -14,9 +14,14 @@ namespace Timesheets_System.Controllers
     {
         UserDAO _userDAO = new UserDAO();
 
-        public UserDTO getUserByID(string userID)
+        public UserDTO GetUserByID(string username)
         {
-            return _userDAO.getUserByID(userID);
+            return _userDAO.GetUserByID(username);
+        }
+
+        public UserDTO GetUserByFullname(string fullname)
+        {
+            return _userDAO.GetUserByFullname(fullname);
         }
 }
 }

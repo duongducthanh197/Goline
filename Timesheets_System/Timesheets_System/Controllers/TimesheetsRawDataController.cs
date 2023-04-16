@@ -16,5 +16,10 @@ namespace Timesheets_System.Controllers
         {
             _timesheetsRawDataDAO.InsertTimesheetsRawData(rawData);
         }
+
+        public void ConvertRawDataToDetailsData()
+        {
+            _timesheetsRawDataDAO.ConvertRawDataToDetailsData();
+        }
     }
 }
