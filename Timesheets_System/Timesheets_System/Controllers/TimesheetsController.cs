@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Timesheets_System.Models.DAO;
+using Timesheets_System.Models.DTO;
+
+namespace Timesheets_System.Controllers
+{
+
+    public class TimesheetsController
+    {
+
+        TimesheetsDAO _timesheetsDAO = new TimesheetsDAO();
+
+        public List<int> GetYears()
+        {
+            return _timesheetsDAO.GetYears();
+        }
+
+        public List<TimesheetsDTO> GetTimesheetsList(int year, int month)
+        {
+            return _timesheetsDAO.GetTimesheetsList(year, month);
+        }
+    }
+}
