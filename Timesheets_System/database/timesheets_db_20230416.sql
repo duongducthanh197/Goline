@@ -5,7 +5,7 @@
 -- Dumped from database version 11.14
 -- Dumped by pg_dump version 11.14
 
--- Started on 2023-04-17 04:58:31
+-- Started on 2023-04-17 16:59:20
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2878 (class 1262 OID 24077)
+-- TOC entry 2878 (class 1262 OID 32415)
 -- Name: Timesheets_System; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -42,22 +42,24 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 218 (class 1255 OID 28065)
+-- TOC entry 219 (class 1255 OID 32550)
 -- Name: update_time_when_duplicate_fullname_and_date(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
 CREATE FUNCTION public.update_time_when_duplicate_fullname_and_date() RETURNS trigger
     LANGUAGE plpgsql
-    AS $$BEGIN
+    AS $$
+BEGIN
 	IF EXISTS (SELECT * FROM timesheets_details_tb t WHERE NEW.fullname = t.fullname AND NEW.date = t.date) THEN
 		UPDATE timesheets_details_tb
 		SET checkin = NEW.checkin, checkout = NEW.checkout, working_hours = NEW.working_hours
 		WHERE Timesheets_details_tb.fullname = NEW.fullname AND timesheets_details_tb.date = NEW.date;
+        RETURN NULL;
 	ELSE
-		INSERT INTO timesheets_details_tb (fullname, date, checkin, checkout, working_hours)
-		VALUES (NEW.fullname, NEW.date, NEW.checkin, NEW.checkout, NEW.working_hours);
+		--INSERT INTO timesheets_details_tb (fullname, date, checkin, checkout, working_hours)
+		--VALUES (NEW.fullname, NEW.date, NEW.checkin, NEW.checkout, NEW.working_hours);
 	END IF;
-	RETURN NULL;
+	RETURN NEW;
 END;
 $$;
 
@@ -65,7 +67,7 @@ $$;
 ALTER FUNCTION public.update_time_when_duplicate_fullname_and_date() OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1255 OID 28026)
+-- TOC entry 206 (class 1255 OID 32417)
 -- Name: update_total_working_hours_and_days(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -91,7 +93,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 201 (class 1259 OID 27975)
+-- TOC entry 196 (class 1259 OID 32418)
 -- Name: auth_group_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -104,7 +106,7 @@ CREATE TABLE public.auth_group_tb (
 ALTER TABLE public.auth_group_tb OWNER TO postgres;
 
 --
--- TOC entry 197 (class 1259 OID 27947)
+-- TOC entry 197 (class 1259 OID 32421)
 -- Name: department_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -117,7 +119,7 @@ CREATE TABLE public.department_tb (
 ALTER TABLE public.department_tb OWNER TO postgres;
 
 --
--- TOC entry 199 (class 1259 OID 27957)
+-- TOC entry 198 (class 1259 OID 32424)
 -- Name: member_of_team_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -131,7 +133,7 @@ CREATE TABLE public.member_of_team_tb (
 ALTER TABLE public.member_of_team_tb OWNER TO postgres;
 
 --
--- TOC entry 202 (class 1259 OID 27980)
+-- TOC entry 199 (class 1259 OID 32427)
 -- Name: screen_auth_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -145,7 +147,7 @@ CREATE TABLE public.screen_auth_tb (
 ALTER TABLE public.screen_auth_tb OWNER TO postgres;
 
 --
--- TOC entry 200 (class 1259 OID 27970)
+-- TOC entry 200 (class 1259 OID 32430)
 -- Name: screen_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -158,7 +160,7 @@ CREATE TABLE public.screen_tb (
 ALTER TABLE public.screen_tb OWNER TO postgres;
 
 --
--- TOC entry 198 (class 1259 OID 27952)
+-- TOC entry 201 (class 1259 OID 32433)
 -- Name: team_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -172,7 +174,7 @@ CREATE TABLE public.team_tb (
 ALTER TABLE public.team_tb OWNER TO postgres;
 
 --
--- TOC entry 204 (class 1259 OID 28047)
+-- TOC entry 202 (class 1259 OID 32436)
 -- Name: timesheets_details_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -189,7 +191,7 @@ CREATE TABLE public.timesheets_details_tb (
 ALTER TABLE public.timesheets_details_tb OWNER TO postgres;
 
 --
--- TOC entry 205 (class 1259 OID 28056)
+-- TOC entry 203 (class 1259 OID 32439)
 -- Name: timesheets_raw_data_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -202,7 +204,7 @@ CREATE TABLE public.timesheets_raw_data_tb (
 ALTER TABLE public.timesheets_raw_data_tb OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 28015)
+-- TOC entry 204 (class 1259 OID 32442)
 -- Name: timesheets_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -250,7 +252,7 @@ CREATE TABLE public.timesheets_tb (
 ALTER TABLE public.timesheets_tb OWNER TO postgres;
 
 --
--- TOC entry 196 (class 1259 OID 24081)
+-- TOC entry 205 (class 1259 OID 32445)
 -- Name: user_tb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -278,8 +280,8 @@ CREATE TABLE public.user_tb (
 ALTER TABLE public.user_tb OWNER TO postgres;
 
 --
--- TOC entry 2868 (class 0 OID 27975)
--- Dependencies: 201
+-- TOC entry 2863 (class 0 OID 32418)
+-- Dependencies: 196
 -- Data for Name: auth_group_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -288,28 +290,48 @@ INSERT INTO public.auth_group_tb (auth_group_id, auth_group_name) VALUES ('User'
 
 
 --
--- TOC entry 2864 (class 0 OID 27947)
+-- TOC entry 2864 (class 0 OID 32421)
 -- Dependencies: 197
 -- Data for Name: department_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.department_tb (department_id, department_name) VALUES ('DEV', 'Development');
-INSERT INTO public.department_tb (department_id, department_name) VALUES ('HR', 'Human Resource');
-INSERT INTO public.department_tb (department_id, department_name) VALUES ('COMT', 'Comtor');
+INSERT INTO public.department_tb (department_id, department_name) VALUES ('BOD', 'BOD');
+INSERT INTO public.department_tb (department_id, department_name) VALUES ('General', 'Human Resource');
 
 
 --
--- TOC entry 2866 (class 0 OID 27957)
--- Dependencies: 199
+-- TOC entry 2865 (class 0 OID 32424)
+-- Dependencies: 198
 -- Data for Name: member_of_team_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('NET', 'ThanhDD', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('BOD', 'ThaoLS', 'BOD');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'ThienLTH', 'PM');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'ChuongLV', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('HR', 'VyTTH', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('NET', 'DatTC', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('Comtor', 'SangLT', 'PM');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('PHP', 'TrungNT', 'PM');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('PHP', 'HungTH', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('PHP', 'HoanTV', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('PHP', 'HaiNV', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'DungLV', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('React', 'DatNT', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'HiepPD', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('PHP', 'HaiN', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'HaoH', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'HoangL', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('JAVA', 'TuanLQ', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('React', 'QuangNM', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('React', 'ThanhDT', 'Member');
+INSERT INTO public.member_of_team_tb (team_id, member_id, "position") VALUES ('React', 'LuanND', 'Member');
 
 
 --
--- TOC entry 2869 (class 0 OID 27980)
--- Dependencies: 202
+-- TOC entry 2866 (class 0 OID 32427)
+-- Dependencies: 199
 -- Data for Name: screen_auth_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -319,10 +341,12 @@ INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VA
 INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VALUES ('Admin', 'frmEmployeeList', '1');
 INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VALUES ('Admin', 'frmPersonalTimesheets', '1');
 INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VALUES ('Admin', 'frmTimesheets', '1');
+INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VALUES ('Admin', 'tsmi_Logout', '1');
+INSERT INTO public.screen_auth_tb (auth_group_id, screen_id, allowed_to_open) VALUES ('Admin', 'frmPersonalTimesheet', '1');
 
 
 --
--- TOC entry 2867 (class 0 OID 27970)
+-- TOC entry 2867 (class 0 OID 32430)
 -- Dependencies: 200
 -- Data for Name: screen_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -333,259 +357,143 @@ INSERT INTO public.screen_tb (screen_id, screen_name) VALUES ('frmEmpoloyeeList'
 
 
 --
--- TOC entry 2865 (class 0 OID 27952)
--- Dependencies: 198
+-- TOC entry 2868 (class 0 OID 32433)
+-- Dependencies: 201
 -- Data for Name: team_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('JAVA', 'DEV', 'Java Development');
 INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('NET', 'DEV', 'NET Development');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('PHP', 'DEV', 'DEV Development');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('React', 'DEV', 'DEV Development');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('Comtor', 'DEV', 'DEV Development');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('Tester', 'DEV', 'DEV Development');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('HR', 'General', 'Human Resource');
+INSERT INTO public.team_tb (team_id, department_id, team_name) VALUES ('BOD', 'BOD', 'BOD');
 
 
 --
--- TOC entry 2871 (class 0 OID 28047)
--- Dependencies: 204
+-- TOC entry 2869 (class 0 OID 32436)
+-- Dependencies: 202
 -- Data for Name: timesheets_details_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-26', '2022-11-26 09:11:05', '2022-11-26 14:23:04', 5.2);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Đình Luân', '2022-11-29', '2022-11-29 13:30:24', '2022-11-29 16:42:00', 3.2);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long', '2022-11-28', '2022-11-28 07:59:20', '2022-11-28 13:30:05', 5.5);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp', '2022-11-25', '2022-11-25 17:02:38', '2022-11-25 17:02:38', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-27', '2022-11-27 14:01:35', '2022-11-27 14:01:35', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang', '2022-11-29', '2022-11-29 10:30:30', '2022-11-29 17:04:33', 6.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-28', '2022-11-28 11:31:26', '2022-11-28 13:24:45', 1.9);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng', '2022-11-29', '2022-11-29 08:04:35', '2022-11-29 15:40:23', 7.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-29', '2022-11-29 09:04:35', '2022-11-29 16:03:59', 7.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng', '2022-11-28', '2022-11-28 07:45:22', '2022-11-28 16:48:22', 8.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long', '2022-11-29', '2022-11-29 07:56:11', '2022-11-29 15:17:22', 7.4);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng', '2022-11-30', '2022-11-30 11:23:23', '2022-11-30 14:58:46', 3.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-27', '2022-11-27 17:11:37', '2022-11-27 17:41:45', 0.5);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-30', '2022-11-30 08:26:23', '2022-11-30 13:01:27', 4.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp', '2022-11-30', '2022-11-30 10:40:13', '2022-11-30 14:04:41', 3.4);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-30', '2022-11-30 10:25:12', '2022-11-30 14:46:19', 4.4);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern', '2022-11-30', '2022-11-30 08:06:10', '2022-11-30 08:06:10', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-30', '2022-11-30 07:53:49', '2022-11-30 13:19:02', 5.4);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng', '2022-11-29', '2022-11-29 07:50:34', '2022-11-29 14:39:08', 6.8);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern', '2022-11-28', '2022-11-28 08:02:57', '2022-11-28 13:00:38', 5.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-25', '2022-11-25 16:55:51', '2022-11-25 16:55:51', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-21', '2022-11-21 16:25:49', '2022-11-21 16:26:03', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-21', '2022-11-21 07:58:20', '2022-11-21 10:51:01', 2.9);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Văn Hoàn', '2022-11-28', '2022-11-28 07:54:02', '2022-11-28 13:10:28', 5.3);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-24', '2022-11-24 09:37:39', '2022-11-24 09:37:39', 0.0);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-26', '2022-11-26 17:46:29', '2022-11-26 17:46:46', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Đình Luân', '2022-11-29', '2022-11-29 13:30:24', '2022-11-29 16:42:00', 3.2);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'CẢNH BÁO!', '2022-11-25', '2022-11-25 16:53:04', '2022-11-25 16:53:04', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng ', '2022-11-25', '2022-11-25 16:55:18', '2022-11-25 17:03:14', 0.1);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-25', '2022-11-25 08:12:20', '2022-11-25 15:28:19', 7.3);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-26', '2022-11-26 09:11:05', '2022-11-26 14:23:04', 5.2);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-29', '2022-11-29 11:41:09', '2022-11-29 17:16:28', 5.6);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Văn Hoàn', '2022-11-29', '2022-11-29 07:09:43', '2022-11-29 07:09:43', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-30', '2022-11-30 10:25:12', '2022-11-30 14:46:19', 4.4);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-29', '2022-11-29 11:41:09', '2022-11-29 17:16:28', 5.6);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang ', '2022-11-29', '2022-11-29 10:30:30', '2022-11-29 17:04:33', 6.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng', '2022-11-30', '2022-11-30 12:23:21', '2022-11-30 12:23:21', 0.0);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-23', '2022-11-23 13:09:14', '2022-11-23 13:09:26', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-21', '2022-11-21 16:25:49', '2022-11-21 16:26:03', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-29', '2022-11-29 09:04:35', '2022-11-29 16:03:59', 7.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-24', '2022-11-24 13:24:48', '2022-11-24 13:24:48', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp ', '2022-11-25', '2022-11-25 17:02:38', '2022-11-25 17:02:38', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang ', '2022-11-30', '2022-11-30 07:49:58', '2022-11-30 15:37:26', 7.8);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-28', '2022-11-28 11:31:26', '2022-11-28 13:24:45', 1.9);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải ', '2022-11-25', '2022-11-25 16:55:15', '2022-11-25 16:55:15', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải ', '2022-11-28', '2022-11-28 07:48:51', '2022-11-28 14:56:11', 7.1);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-27', '2022-11-27 17:11:37', '2022-11-27 17:41:45', 0.5);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng ', '2022-11-30', '2022-11-30 12:23:21', '2022-11-30 12:23:21', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp ', '2022-11-30', '2022-11-30 10:40:13', '2022-11-30 14:04:41', 3.4);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long ', '2022-11-29', '2022-11-29 07:56:11', '2022-11-29 15:17:22', 7.4);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long ', '2022-11-30', '2022-11-30 12:23:00', '2022-11-30 12:23:00', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng ', '2022-11-30', '2022-11-30 11:23:23', '2022-11-30 14:58:46', 3.6);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng', '2022-11-28', '2022-11-28 12:37:53', '2022-11-28 12:37:53', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-20', '2022-11-20 08:08:58', '2022-11-20 08:08:58', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-30', '2022-11-30 13:38:22', '2022-11-30 13:38:22', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-29', '2022-11-29 08:36:49', '2022-11-29 09:48:54', 1.2);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-25', '2022-11-25 08:12:20', '2022-11-25 15:28:19', 7.3);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải', '2022-11-29', '2022-11-29 07:54:42', '2022-11-29 13:07:31', 5.2);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-25', '2022-11-25 11:52:02', '2022-11-25 11:52:02', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-30', '2022-11-30 08:26:23', '2022-11-30 13:01:27', 4.6);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-29', '2022-11-29 08:36:49', '2022-11-29 09:48:54', 1.2);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng ', '2022-11-28', '2022-11-28 12:37:53', '2022-11-28 12:37:53', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-30', '2022-11-30 13:38:22', '2022-11-30 13:38:22', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern ', '2022-11-30', '2022-11-30 08:06:10', '2022-11-30 08:06:10', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng ', '2022-11-29', '2022-11-29 08:04:35', '2022-11-29 15:40:23', 7.6);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang ', '2022-11-28', '2022-11-28 12:37:08', '2022-11-28 20:44:58', 8.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp ', '2022-11-29', '2022-11-29 07:58:55', '2022-11-29 13:06:57', 5.1);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải ', '2022-11-29', '2022-11-29 07:54:42', '2022-11-29 13:07:31', 5.2);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-30', '2022-11-30 07:53:49', '2022-11-30 13:19:02', 5.4);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng ', '2022-11-28', '2022-11-28 07:45:22', '2022-11-28 16:48:22', 8.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-27', '2022-11-27 14:01:35', '2022-11-27 14:01:35', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang', '2022-11-30', '2022-11-30 07:49:58', '2022-11-30 14:40:42', 6.8);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung', '2022-11-28', '2022-11-28 07:52:40', '2022-11-28 14:09:11', 6.3);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-28', '2022-11-28 11:46:40', '2022-11-28 13:40:13', 1.9);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern ', '2022-11-29', '2022-11-29 12:52:27', '2022-11-29 15:42:12', 2.8);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long ', '2022-11-28', '2022-11-28 07:59:20', '2022-11-28 13:30:05', 5.5);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Huỳnh Quốc Trung ', '2022-11-25', '2022-11-25 17:35:15', '2022-11-25 17:35:47', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Hoàng Hảo', '2022-11-25', '2022-11-25 16:55:51', '2022-11-25 16:55:51', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy', '2022-11-24', '2022-11-24 13:24:48', '2022-11-24 13:24:48', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang', '2022-11-25', '2022-11-25 17:00:11', '2022-11-25 17:00:11', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern', '2022-11-29', '2022-11-29 12:52:27', '2022-11-29 15:42:12', 2.8);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Huỳnh Quốc Trung', '2022-11-25', '2022-11-25 17:35:15', '2022-11-25 17:35:47', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Hữu Hùng', '2022-11-25', '2022-11-25 16:55:18', '2022-11-25 17:03:14', 0.1);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp', '2022-11-28', '2022-11-28 08:03:06', '2022-11-28 16:02:29', 8.0);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'CẢNH BÁO!', '2022-11-28', '2022-11-28 07:52:57', '2022-11-28 07:52:57', 0.0);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-29', '2022-11-29 07:52:56', '2022-11-29 14:46:20', 6.9);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải ', '2022-11-30', '2022-11-30 07:44:25', '2022-11-30 07:44:25', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Ngô Thành Trung ', '2022-11-28', '2022-11-28 07:52:40', '2022-11-28 14:09:11', 6.3);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Sỹ Thao', '2022-11-21', '2022-11-21 07:58:20', '2022-11-21 10:51:01', 2.9);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Hoàng-intern ', '2022-11-28', '2022-11-28 08:02:57', '2022-11-28 13:00:38', 5.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải', '2022-11-28', '2022-11-28 07:48:51', '2022-11-28 14:56:11', 7.1);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải', '2022-11-25', '2022-11-25 16:55:15', '2022-11-25 16:55:15', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang', '2022-11-28', '2022-11-28 12:37:08', '2022-11-28 20:44:58', 8.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Nguyễn Văn Hải', '2022-11-30', '2022-11-30 07:44:25', '2022-11-30 07:44:25', 0.0);
 INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, '47363565944846', '2022-11-30', '2022-11-30 15:24:38', '2022-11-30 15:24:38', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Thị Hiền Vy ', '2022-11-20', '2022-11-20 08:08:58', '2022-11-20 08:08:58', 0.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp ', '2022-11-28', '2022-11-28 08:03:06', '2022-11-28 16:02:29', 8.0);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Trần Văn Hoàn', '2022-11-28', '2022-11-28 07:54:02', '2022-11-28 13:10:28', 5.3);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Dũng ', '2022-11-29', '2022-11-29 07:50:34', '2022-11-29 14:39:08', 6.8);
-INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Thị Sang ', '2022-11-25', '2022-11-25 17:00:11', '2022-11-25 17:00:11', 0.0);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Phan Đình Hiệp', '2022-11-29', '2022-11-29 07:58:55', '2022-11-29 13:06:57', 5.1);
+INSERT INTO public.timesheets_details_tb (username, fullname, date, checkin, checkout, working_hours) VALUES (NULL, 'Lê Văn Long', '2022-11-30', '2022-11-30 12:23:00', '2022-11-30 12:23:00', 0.0);
 
 
 --
--- TOC entry 2872 (class 0 OID 28056)
--- Dependencies: 205
+-- TOC entry 2870 (class 0 OID 32439)
+-- Dependencies: 203
 -- Data for Name: timesheets_raw_data_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 15:37:26');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('47363565944846', '2022-11-30 15:24:38');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-30 14:58:46');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-30 14:46:19');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 14:40:42');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 14:04:41');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-30 13:38:22');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 13:37:07');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 13:33:54');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 13:27:27');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-30 13:19:02');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-30 13:01:27');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Dũng ', '2022-11-30 12:23:21');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-30 12:23:00');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-30 12:22:12');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 12:20:58');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-30 12:20:36');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 12:20:24');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-30 12:18:56');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 11:47:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 11:47:08');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 11:47:05');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 11:34:46');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-30 11:23:23');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-30 10:40:13');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-30 10:28:50');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-30 10:25:12');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 09:32:13');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-30 08:26:23');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-30 08:06:10');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-30 08:02:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-30 07:53:49');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-30 07:49:58');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-30 07:44:25');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-29 17:16:28');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 17:04:33');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Đình Luân', '2022-11-29 16:42:00');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-29 16:03:59');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 15:46:23');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-29 15:42:12');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-29 15:40:23');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-29 15:40:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-29 15:17:22');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-29 15:09:33');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-29 14:46:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Dũng ', '2022-11-29 14:39:08');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-29 14:32:48');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 14:32:37');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-29 14:27:16');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-29 14:12:50');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Đình Luân', '2022-11-29 13:30:24');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-29 13:07:31');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-29 13:06:57');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 13:04:55');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-29 12:55:19');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-29 12:52:27');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-29 12:30:21');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-29 12:11:34');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-29 12:02:32');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 11:42:17');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-29 11:41:09');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-29 10:30:30');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-29 10:16:58');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-29 10:03:17');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-29 10:00:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-29 09:48:54');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-29 09:26:09');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-29 09:04:35');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-29 08:36:49');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-29 08:04:35');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-29 07:58:55');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-29 07:56:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-29 07:54:42');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-29 07:52:56');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Dũng ', '2022-11-29 07:50:34');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Văn Hoàn', '2022-11-29 07:09:43');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-28 20:44:58');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-28 16:57:47');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Dũng ', '2022-11-28 16:48:22');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-28 16:02:29');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-28 14:56:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-28 14:19:34');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-28 14:11:00');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-28 14:09:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-28 13:40:13');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-28 13:34:25');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-28 13:30:05');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-28 13:24:45');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Văn Hoàn', '2022-11-28 13:10:28');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-28 13:00:38');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-28 12:37:53');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-28 12:37:08');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-28 12:36:34');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-28 12:31:21');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-28 12:29:13');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-28 12:27:47');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-28 12:27:45');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Văn Hoàn', '2022-11-28 12:26:46');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-28 12:25:29');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-28 12:25:04');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-28 12:25:03');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-28 12:24:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-28 11:46:40');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-28 11:31:26');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-28 08:03:09');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-28 08:03:06');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Hoàng-intern ', '2022-11-28 08:02:57');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-28 07:59:31');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Long ', '2022-11-28 07:59:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Văn Hoàn', '2022-11-28 07:54:02');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('CẢNH BÁO!', '2022-11-28 07:52:57');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-28 07:52:40');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-28 07:48:51');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Văn Dũng ', '2022-11-28 07:45:22');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-27 17:41:45');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-27 17:11:37');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-27 14:01:35');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-26 17:46:46');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-26 17:46:29');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-26 14:23:04');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-26 09:11:05');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Huỳnh Quốc Trung ', '2022-11-25 17:35:47');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Huỳnh Quốc Trung ', '2022-11-25 17:35:15');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-25 17:03:14');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Phan Đình Hiệp ', '2022-11-25 17:02:38');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Thị Sang ', '2022-11-25 17:00:11');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Hoàng Hảo', '2022-11-25 16:55:51');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Hữu Hùng ', '2022-11-25 16:55:18');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Nguyễn Văn Hải ', '2022-11-25 16:55:15');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('CẢNH BÁO!', '2022-11-25 16:53:04');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-25 15:28:19');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-25 15:28:14');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-25 11:52:02');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-25 08:12:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-24 13:24:48');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-24 09:37:39');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-23 13:09:26');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-23 13:09:14');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-21 16:26:03');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Ngô Thành Trung ', '2022-11-21 16:25:49');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:51:01');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:50:51');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:50:42');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:50:39');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:50:35');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 10:50:29');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 08:52:18');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 08:26:47');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Lê Sỹ Thao', '2022-11-21 07:58:20');
-INSERT INTO public.timesheets_raw_data_tb (fullname, in_out_time) VALUES ('Trần Thị Hiền Vy ', '2022-11-20 08:08:58');
 
 
 --
--- TOC entry 2870 (class 0 OID 28015)
--- Dependencies: 203
+-- TOC entry 2871 (class 0 OID 32442)
+-- Dependencies: 204
 -- Data for Name: timesheets_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('ThanhDD', 'Đường Đức Thanh', 2022, 12, 4.9, 10.1, 7.0, 1.0, 2.0, 0.0, 10.2, 1.5, 1.9, NULL, NULL, 5.2, NULL, 2.7, 2.7, NULL, NULL, NULL, NULL, 9.3, 0.0, NULL, NULL, NULL, NULL, 6.8, 9.3, 3.8, 9.3, 0.0, NULL, 16.0, 87.7);
-INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('Thanhdd', 'Đường Đức Thanh', 2022, 11, 9.1, 6.8, 0.0, NULL, 2.8, 3.6, 0.0, 2.4, 1.8, NULL, NULL, 0.0, 3.0, 8.0, 0.0, NULL, NULL, NULL, NULL, 6.8, 0.0, 0.0, 0.0, 0.0, NULL, NULL, NULL, 3.8, NULL, NULL, NULL, 10.0, 48.1);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('HaoH', 'Hoàng Hảo', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, 1.9, 7.0, 5.4, NULL, 3.0, 14.3);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('ThaoLS', 'Lê Sỹ Thao', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2.9, NULL, 0.0, 0.0, 0.0, 0.0, 0.5, NULL, 6.9, 4.6, NULL, 4.0, 14.9);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('SangLT', 'Lê Thị Sang', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, 8.0, 6.6, 6.8, NULL, 3.0, 21.4);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('DungLV', 'Lê Văn Dũng', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 8.0, 6.8, 0.0, NULL, 2.0, 14.8);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('TrungNT', 'Ngô Thành Trung', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, NULL, 7.3, NULL, 0.0, 6.3, 1.2, 0.0, NULL, 3.0, 14.8);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('LuanND', 'Nguyễn Đình Luân', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3.2, NULL, NULL, 1.0, 3.2);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('HaiNV', 'Nguyễn Văn Hải', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, 7.1, 5.2, 0.0, NULL, 2.0, 12.3);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('HiepPD', 'Phan Đình Hiệp', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, 8.0, 5.1, 3.4, NULL, 3.0, 16.5);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('HungTH', 'Trần Hữu Hùng', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.1, NULL, NULL, 0.0, 7.6, 3.6, NULL, 3.0, 11.3);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('VyTTH', 'Trần Thị Hiền Vy', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0.0, NULL, NULL, NULL, 0.0, NULL, 5.2, NULL, 1.9, 5.6, 4.4, NULL, 4.0, 17.1);
+INSERT INTO public.timesheets_tb (username, fullname, year, month, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, total_working_days, total_working_hours) VALUES ('HoanTV', 'Trần Văn Hoàn', 2022, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5.3, 0.0, NULL, 3.0, 2.0, 8.3);
 
 
 --
--- TOC entry 2863 (class 0 OID 24081)
--- Dependencies: 196
+-- TOC entry 2872 (class 0 OID 32445)
+-- Dependencies: 205
 -- Data for Name: user_tb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('AnhNV', 'c30f02adc000b565f761a2b292b37169', 'Nguyễn Văn Anh', B'1', '1997-04-25', 'anv@gmail.com', '0379114752', 'Cẩm Lệ, Đà Nẵng', 'Kinh', 'Không', '1482663584', NULL, NULL, NULL, NULL, NULL, 'User');
 INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('ThanhDD', 'c30f02adc000b565f761a2b292b37169', 'Đường Đức Thanh', B'1', '1997-04-29', 'thanhdd@golineglobal.vn', '0379113210', 'Ngũ Hành Sơn, Đà Nẵng', 'Kinh', 'Không', '184272075', NULL, NULL, NULL, '2023-03-01', NULL, 'Admin');
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('ThaoLS', '1962026656160185351301320480154111117132155', 'Lê Sỹ Thao', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('ThienLTH', '1962026656160185351301320480154111117132155', 'Lê Trương Huỳnh Thiên', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('ChuongLV', '1962026656160185351301320480154111117132155', 'Lê Văn Chương', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('VyTTH', '1962026656160185351301320480154111117132155', 'Trần Thị Hiền Vy', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('DatTC', '1962026656160185351301320480154111117132155', 'Thân Công Đạt', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('SangLT', '1962026656160185351301320480154111117132155', 'Lê Thị Sang', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('TrungNT', '1962026656160185351301320480154111117132155', 'Ngô Thành Trung', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HungTH', '1962026656160185351301320480154111117132155', 'Trần Hữu Hùng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HoanTV', '1962026656160185351301320480154111117132155', 'Trần Văn Hoàn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HaiNV', '1962026656160185351301320480154111117132155', 'Nguyễn Văn Hải', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('DungLV', '1962026656160185351301320480154111117132155', 'Lê Văn Dũng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('DatNT', '1962026656160185351301320480154111117132155', 'Nguyễn Thành Đạt', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HiepPD', '1962026656160185351301320480154111117132155', 'Phan Đình Hiệp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HaiN', '1962026656160185351301320480154111117132155', 'Nguyễn Hải', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HaoH', '1962026656160185351301320480154111117132155', 'Hoàng Hảo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('HoangL', '1962026656160185351301320480154111117132155', 'Lê Hoàng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('TuanLQ', '1962026656160185351301320480154111117132155', 'Lê Quốc Tuấn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('QuangNM', '1962026656160185351301320480154111117132155', 'Nguyễn Minh Quang', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('ThanhDT', '1962026656160185351301320480154111117132155', 'Đỗ Tấn Thành', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_tb (username, password, fullname, gender, birth_date, email, phone, address, ethnic, religion, citizen_id, tax_code, social_insurance_no, photo, date_hired, contract_no, auth_group_id) VALUES ('LuanND', '1962026656160185351301320480154111117132155', 'Nguyễn Đình Luân', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 --
--- TOC entry 2735 (class 2606 OID 28029)
+-- TOC entry 2729 (class 2606 OID 32452)
 -- Name: screen_auth_tb auth_screen_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -594,7 +502,7 @@ ALTER TABLE ONLY public.screen_auth_tb
 
 
 --
--- TOC entry 2733 (class 2606 OID 27979)
+-- TOC entry 2723 (class 2606 OID 32454)
 -- Name: auth_group_tb authentication_group_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -603,7 +511,7 @@ ALTER TABLE ONLY public.auth_group_tb
 
 
 --
--- TOC entry 2725 (class 2606 OID 27951)
+-- TOC entry 2725 (class 2606 OID 32456)
 -- Name: department_tb department_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -612,7 +520,7 @@ ALTER TABLE ONLY public.department_tb
 
 
 --
--- TOC entry 2729 (class 2606 OID 27961)
+-- TOC entry 2727 (class 2606 OID 32458)
 -- Name: member_of_team_tb member_of_team_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -621,7 +529,7 @@ ALTER TABLE ONLY public.member_of_team_tb
 
 
 --
--- TOC entry 2731 (class 2606 OID 28031)
+-- TOC entry 2731 (class 2606 OID 32460)
 -- Name: screen_tb screen_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -630,7 +538,7 @@ ALTER TABLE ONLY public.screen_tb
 
 
 --
--- TOC entry 2727 (class 2606 OID 27956)
+-- TOC entry 2733 (class 2606 OID 32462)
 -- Name: team_tb team_id_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -639,7 +547,7 @@ ALTER TABLE ONLY public.team_tb
 
 
 --
--- TOC entry 2739 (class 2606 OID 28068)
+-- TOC entry 2735 (class 2606 OID 32464)
 -- Name: timesheets_details_tb timesheets_details_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -648,7 +556,7 @@ ALTER TABLE ONLY public.timesheets_details_tb
 
 
 --
--- TOC entry 2737 (class 2606 OID 28046)
+-- TOC entry 2737 (class 2606 OID 32466)
 -- Name: timesheets_tb timesheets_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -657,7 +565,7 @@ ALTER TABLE ONLY public.timesheets_tb
 
 
 --
--- TOC entry 2723 (class 2606 OID 24088)
+-- TOC entry 2739 (class 2606 OID 32468)
 -- Name: user_tb user_tb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -666,22 +574,22 @@ ALTER TABLE ONLY public.user_tb
 
 
 --
--- TOC entry 2741 (class 2620 OID 28066)
+-- TOC entry 2740 (class 2620 OID 32551)
 -- Name: timesheets_details_tb update_time_when_duplicate_fullname_and_date; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
-CREATE TRIGGER update_time_when_duplicate_fullname_and_date AFTER INSERT ON public.timesheets_details_tb FOR EACH ROW EXECUTE PROCEDURE public.update_time_when_duplicate_fullname_and_date();
+CREATE TRIGGER update_time_when_duplicate_fullname_and_date BEFORE INSERT ON public.timesheets_details_tb FOR EACH ROW EXECUTE PROCEDURE public.update_time_when_duplicate_fullname_and_date();
 
 
 --
--- TOC entry 2740 (class 2620 OID 28027)
+-- TOC entry 2741 (class 2620 OID 32470)
 -- Name: timesheets_tb update_total_working_hours_and_days_trigger; Type: TRIGGER; Schema: public; Owner: postgres
 --
 
 CREATE TRIGGER update_total_working_hours_and_days_trigger BEFORE INSERT OR UPDATE ON public.timesheets_tb FOR EACH ROW EXECUTE PROCEDURE public.update_total_working_hours_and_days();
 
 
--- Completed on 2023-04-17 04:58:31
+-- Completed on 2023-04-17 16:59:21
 
 --
 -- PostgreSQL database dump complete
