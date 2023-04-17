@@ -35,8 +35,26 @@ namespace Timesheets_System.Models.DAO
                                     "ELSE CAST(EXTRACT(EPOCH FROM (MAX(in_out_time) - MIN(in_out_time))) / 3600 AS NUMERIC(10,1)) " +
                                     "END AS duration " +
                                     "FROM  timesheets_raw_data_tb " +
-                                    "GROUP BY fullname, CAST(in_out_time AS DATE)";
+                                    "GROUP BY fullname," +
+                                    " CAST(in_out_time AS DATE)";
             _dbConnection.Execute(query);
         }
+
+        public List<TimesheetsRawDataDTO> GetRawDataList() 
+        {
+            string query = @"SELECT fullname, DATE_TRUNC('day', in_out_time) AS in_out_time " +
+                                    "FROM timesheets_raw_data_tb " +
+                                    "GROUP BY fullname, DATE_TRUNC('day', in_out_time) "+
+                                    "ORDER BY fullname, DATE_TRUNC('day', in_out_time)";
+
+            return _dbConnection.Query<TimesheetsRawDataDTO>(query).ToList();   
+        }
+
+        public void TruncateRawData()
+        {
+            string query = @"TRUNCATE TABLE timesheets_raw_data_tb";
+            _dbConnection.Execute(query);
+        }
+
     }
 }

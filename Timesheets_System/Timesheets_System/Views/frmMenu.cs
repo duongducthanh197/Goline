@@ -15,7 +15,6 @@ namespace Timesheets_System.Views
 {
     public partial class frmMenu : Form
     {
-
         Point mouseOffset;
         ScreenAuthController _screenAuthController = new ScreenAuthController();
 
@@ -130,10 +129,26 @@ namespace Timesheets_System.Views
             }
         }
 
+        private void tsmi_Logout_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("Bạn có muốn đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                frmLogin.loggedUser = null;
+                frmLogin frm = new frmLogin();  
+                frm.Show();
+                this.Close();
+            }   
+        }
 
         private void frmTimesheets_Click(object sender, EventArgs e)
         {
             frmTimesheets form = new frmTimesheets();
+            form.ShowDialog();
+        }
+
+        private void frmPersonalTimesheet_Click(object sender, EventArgs e)
+        {
+            frmPersonalTimesheet form = new frmPersonalTimesheet();
             form.ShowDialog();
         }
     }

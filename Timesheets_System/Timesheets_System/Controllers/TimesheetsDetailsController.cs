@@ -12,9 +12,9 @@ namespace Timesheets_System.Controllers
     {
         TimesheetsDetailsDAO _timesheetsDetailsDAO = new TimesheetsDetailsDAO();
 
-        public TimesheetsDetailsDTO GetDetailsByFullnameAndDate(TimesheetsDetailsDTO _timsheetsDetailsDTO)
+        public TimesheetsDetailsDTO GetDetailsByFullnameAndDate(TimesheetsRawDataDTO _timesheetsRawDataDTO)
         {
-            return _timesheetsDetailsDAO.GetDetailsByFullnameAndDate(_timsheetsDetailsDTO);
+            return _timesheetsDetailsDAO.GetDetailsByFullnameAndDate(_timesheetsRawDataDTO);
         }
     }
 }

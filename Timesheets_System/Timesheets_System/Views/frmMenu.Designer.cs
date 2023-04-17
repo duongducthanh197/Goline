@@ -41,6 +41,7 @@
             this.tsmi_System = new System.Windows.Forms.ToolStripMenuItem();
             this.frmPermissionGrant = new System.Windows.Forms.ToolStripMenuItem();
             this.frmChangPassword = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmi_Logout = new System.Windows.Forms.ToolStripMenuItem();
             this.PictureBox1 = new System.Windows.Forms.PictureBox();
             this.Panel2 = new System.Windows.Forms.Panel();
             this.lbl_Username = new System.Windows.Forms.Label();
@@ -89,6 +90,7 @@
             this.frmPersonalTimesheet.Name = "frmPersonalTimesheet";
             this.frmPersonalTimesheet.Size = new System.Drawing.Size(184, 22);
             this.frmPersonalTimesheet.Text = "Bảng công cá nhân";
+            this.frmPersonalTimesheet.Click += new System.EventHandler(this.frmPersonalTimesheet_Click);
             // 
             // tsmi_Personnel
             // 
@@ -130,7 +132,8 @@
             // 
             this.tsmi_System.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.frmPermissionGrant,
-            this.frmChangPassword});
+            this.frmChangPassword,
+            this.tsmi_Logout});
             this.tsmi_System.Name = "tsmi_System";
             this.tsmi_System.Size = new System.Drawing.Size(72, 28);
             this.tsmi_System.Text = "Hệ thống";
@@ -138,14 +141,21 @@
             // frmPermissionGrant
             // 
             this.frmPermissionGrant.Name = "frmPermissionGrant";
-            this.frmPermissionGrant.Size = new System.Drawing.Size(152, 22);
+            this.frmPermissionGrant.Size = new System.Drawing.Size(180, 22);
             this.frmPermissionGrant.Text = "Phân quyền";
             // 
             // frmChangPassword
             // 
             this.frmChangPassword.Name = "frmChangPassword";
-            this.frmChangPassword.Size = new System.Drawing.Size(152, 22);
+            this.frmChangPassword.Size = new System.Drawing.Size(180, 22);
             this.frmChangPassword.Text = "Đổi mật khẩu";
+            // 
+            // tsmi_Logout
+            // 
+            this.tsmi_Logout.Name = "tsmi_Logout";
+            this.tsmi_Logout.Size = new System.Drawing.Size(180, 22);
+            this.tsmi_Logout.Text = "Đăng xuất";
+            this.tsmi_Logout.Click += new System.EventHandler(this.tsmi_Logout_Click);
             // 
             // PictureBox1
             // 
@@ -225,5 +235,6 @@
         private System.Windows.Forms.ToolStripMenuItem frmPermissionGrant;
         internal System.Windows.Forms.ToolStripMenuItem frmChangPassword;
         internal System.Windows.Forms.PictureBox PictureBox1;
+        private System.Windows.Forms.ToolStripMenuItem tsmi_Logout;
     }
 }

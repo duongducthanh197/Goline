@@ -63,13 +63,28 @@ namespace Timesheets_System.Models.DAO
 
         public void InsertNewTimesheets(TimesheetsDTO _timesheetsDTO)
         {
-            string query = @"INSERT INTO Timekeeping_tb (username, fullname, year, month) VALUES (@username, @fullname, @year, @month)";
+            string query = @"INSERT INTO Timesheets_tb (username, fullname, year, month) VALUES (@username, @fullname, @year, @month)";
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("username", _timesheetsDTO.Username);
             parameters.Add("fullname", _timesheetsDTO.Fullname);
             parameters.Add("year", _timesheetsDTO.Year);
             parameters.Add("month", _timesheetsDTO.Month);
+
+            _dbConnection.Execute(query, parameters);
+        }
+
+        public void UpdateTimesheetsByDay(TimesheetsDetailsDTO _timesheetsDetailsDTO)
+        {
+            string updateForClm = _timesheetsDetailsDTO.Date.Day.ToString();
+            string query = $"UPDATE Timesheets_tb SET D{updateForClm} = @working_hours WHERE fullname = @fullname AND year = @year AND month = @month";
+
+            DynamicParameters parameters = new DynamicParameters();
+            //parameters.Add("day", _timesheetsDetailsDTO.Date.Day);
+            parameters.Add("working_hours", _timesheetsDetailsDTO.Working_Hours);
+            parameters.Add("fullname", _timesheetsDetailsDTO.Fullname);
+            parameters.Add("year", _timesheetsDetailsDTO.Date.Year);
+            parameters.Add("month", _timesheetsDetailsDTO.Date.Month);
 
             _dbConnection.Execute(query, parameters);
         }

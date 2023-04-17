@@ -35,3 +35,41 @@ D:\Goline Global\HR_Management_System\Source coude\C#\Timesheets_System\Timeshee
 D:\Goline Global\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.CopyComplete
 D:\Goline Global\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmMenu.resources
 D:\Goline Global\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmTimesheets.resources
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Timesheets_System.exe.config
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Timesheets_System.exe
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Timesheets_System.pdb
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Dapper.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Npgsql.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Buffers.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Memory.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Numerics.Vectors.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Text.Encodings.Web.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Text.Json.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.ValueTuple.dll
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Dapper.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Npgsql.pdb
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\Npgsql.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Buffers.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Memory.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Numerics.Vectors.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Text.Encodings.Web.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Text.Json.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\bin\Debug\System.ValueTuple.xml
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.AssemblyReference.cache
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.SuggestedBindingRedirects.cache
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Properties.Resources.resources
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmLogin.resources
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmMenu.resources
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmTimesheets.resources
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.GenerateResource.cache
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.CoreCompileInputs.cache
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.csproj.CopyComplete
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.exe
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.pdb
+D:\ThanhDD\HR_Management_System\Source coude\C#\Timesheets_System\Timesheets_System\obj\Debug\Timesheets_System.Views.frmPersonalTimesheet.resources

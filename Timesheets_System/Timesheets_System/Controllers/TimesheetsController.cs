@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,11 @@ namespace Timesheets_System.Controllers
         public void InsertNewTimesheets(TimesheetsDTO _timesheetsDTO)
         {
             _timesheetsDAO.InsertNewTimesheets(_timesheetsDTO);
+        }
+
+        public void UpdateTimesheetsByDay(TimesheetsDetailsDTO _timesheetsDetailsDTO)
+        {
+            _timesheetsDAO.UpdateTimesheetsByDay(_timesheetsDetailsDTO);
         }
     }
 }

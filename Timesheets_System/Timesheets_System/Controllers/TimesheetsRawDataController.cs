@@ -21,5 +21,16 @@ namespace Timesheets_System.Controllers
         {
             _timesheetsRawDataDAO.ConvertRawDataToDetailsData();
         }
+
+        public List<TimesheetsRawDataDTO> GetRawDataList()
+        {
+            return _timesheetsRawDataDAO.GetRawDataList();
+        }
+
+        public void TruncateRawData()
+        {
+            _timesheetsRawDataDAO.TruncateRawData();
+        }
+
     }
 }

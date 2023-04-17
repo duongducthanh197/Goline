@@ -18,6 +18,7 @@ namespace Timesheets_System.Views
 {
     public partial class frmTimesheets : Form
     {
+        Point mouseOffset;
         UserController _userController = new UserController();
         TimesheetsController _timesheetsController = new TimesheetsController();
         TimesheetsDetailsController _timesheetsDetailsController = new TimesheetsDetailsController();
@@ -38,6 +39,8 @@ namespace Timesheets_System.Views
         {
             //Load value for Year combobox(from DB)
             cbb_Year.DataSource = _timesheetsController.GetYears();
+            if (cbb_Year.Items.Count > 0) cbb_Year.Text = DateTime.Now.Year.ToString();
+            cbb_Month.Text = DateTime.Now.Month.ToString();
 
             //Load timesheets from DB to datagridview
             LoadTimesheets();
@@ -100,38 +103,50 @@ namespace Timesheets_System.Views
                     int lastRow = usedRange.Rows.Count;
 
                     List<TimesheetsRawDataDTO> timesheetRawDataList = new List<TimesheetsRawDataDTO>();
-                    TimesheetsRawDataDTO timesheetRawData = new TimesheetsRawDataDTO();
 
                     //Loop excel file by row
                     for (int index = 1; index <= lastRow; index++)
                     {
                         try
-                        {   //Get data in column 1 and column 3
+                        {
+                            TimesheetsRawDataDTO timesheetRawData = new TimesheetsRawDataDTO();
+                            //Get data in column 1 and column 3
                             String fullname = worksheet.Cells[index, 1].Value;
                             DateTime inOutTime = DateTime.Parse(worksheet.Cells[index, 3].Value);
 
                             //Assign data for timesheets raw data object
-                            timesheetRawData.Fullname = fullname;
+                            timesheetRawData.Fullname = fullname.Trim();
                             timesheetRawData.In_Out_Time = inOutTime;
 
                             //Add timesheets raw data to list
                             timesheetRawDataList.Add(timesheetRawData);
 
-                        }
-                        catch { }
+                        }catch { }
                     }
+
                     //Insert data to database
                     _timesheetsRawDataController.InsertTimesheetsRawData(timesheetRawDataList);
 
                     // Save and close the Excel file
-                    workbook.Save();
                     workbook.Close();
-                    excelApp.Quit();
-
-                    // Release the resources used by the workbook and Excel Application
                     Marshal.ReleaseComObject(workbook);
+                    excelApp.Quit();
+                    Marshal.ReleaseComObject(excelApp);
+                }
+                catch (Exception ex)
+                {
+                    // Save and close the Excel file
+                    workbook.Close();
+                    Marshal.ReleaseComObject(workbook);
+                    excelApp.Quit();
                     Marshal.ReleaseComObject(excelApp);
 
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
                     //Convert raw data(timesheets_raw_data_tb) to details data(timesheets_details_tb)
                     //
                     //   FULLNAME |               INOUTTIME                                                   FULLNAME  |            DATE      |               CHECKIN           |                   CHECKOUT     |   WORKINGHOURS 
@@ -146,7 +161,10 @@ namespace Timesheets_System.Views
                     //Hoàng Văn A |  2022 - 12 - 27 14:08:01
                     _timesheetsRawDataController.ConvertRawDataToDetailsData();
 
-                    foreach (TimesheetsRawDataDTO _timesheetsRawDataDTO in timesheetRawDataList)
+                    List<TimesheetsRawDataDTO> rawDataList = new List<TimesheetsRawDataDTO>();
+                    rawDataList = _timesheetsRawDataController.GetRawDataList();
+
+                    foreach (TimesheetsRawDataDTO _timesheetsRawDataDTO in rawDataList)
                     {
                         UserDTO _userDTO = _userController.GetUserByFullname(_timesheetsRawDataDTO.Fullname);
 
@@ -169,33 +187,55 @@ namespace Timesheets_System.Views
                                 _timesheetsController.InsertNewTimesheets(_timesheetsDTO);
                             }
 
-                            TimesheetsDetailsDTO _timesheetsDetailsDTO = _timesheetsDetailsController.GetDetailsByFullnameAndDate(_timesheetsDTO);
-                            if(_timesheetsde)
+                            TimesheetsDetailsDTO _timesheetsDetailsDTO = new TimesheetsDetailsDTO();
+                            _timesheetsDetailsDTO.Fullname = _userDTO.Fullname;
+                            _timesheetsDetailsDTO.Date = _timesheetsRawDataDTO.In_Out_Time;
+                            _timesheetsDetailsDTO = _timesheetsDetailsController.GetDetailsByFullnameAndDate(_timesheetsRawDataDTO);
+
+                            if (_timesheetsDetailsDTO != null)
+                            {
+                                _timesheetsController.UpdateTimesheetsByDay(_timesheetsDetailsDTO);
+                            }
                         }
                     }
 
+                    //Truncate raw data after filtering and insert to timesheets_details_tb
+                    _timesheetsRawDataController.TruncateRawData();
+
+                    //Reload data source for combobox year
+                    frmInit();
+
                     MessageBox.Show("Hoàn tất", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    // Save and close the Excel file
-                    workbook.Save();
-                    workbook.Close();
-                    excelApp.Quit();
-
-                    // Release the resources used by the workbook and Excel Application
-                    Marshal.ReleaseComObject(workbook);
-                    Marshal.ReleaseComObject(excelApp);
-
-                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
         }
+
         private void PictureBox1_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        private void pn_Title_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mouseOffset = new Point(-e.X, -e.Y);
+            }
+        }
 
+        private void pn_Title_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Point mousePos = Control.MousePosition;
+                mousePos.Offset(mouseOffset.X, mouseOffset.Y);
+                Location = mousePos;
+            }
+
+        }
     }
 }

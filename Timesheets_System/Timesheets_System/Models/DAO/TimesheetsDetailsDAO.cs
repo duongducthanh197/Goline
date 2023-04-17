@@ -21,15 +21,15 @@ namespace Timesheets_System.Models.DAO
             _dbConnection = new NpgsqlConnection(CONSTANTS.CONNECTIONSTRING);
         }
 
-        public TimesheetsDetailsDTO GetDetailsByFullnameAndDate(TimesheetsDetailsDTO _timsheetsDetailsDTO)
+        public TimesheetsDetailsDTO GetDetailsByFullnameAndDate(TimesheetsRawDataDTO _timesheetsRawDataDTO)
         {
-            string query = @"SELECT working_hours " +
+            string query = @"SELECT fullname, date, working_hours " +
                                     "FROM timesheets_details_tb " +
                                     "WHERE fullname = @fullname AND date = @date";
 
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("fullname", _timsheetsDetailsDTO.Fullname);
-            parameters.Add("date", _timsheetsDetailsDTO.Date);
+            parameters.Add("fullname", _timesheetsRawDataDTO.Fullname);
+            parameters.Add("date", _timesheetsRawDataDTO.In_Out_Time.Date);
 
             return _dbConnection.QueryFirstOrDefault<TimesheetsDetailsDTO>(query, parameters);
         }
