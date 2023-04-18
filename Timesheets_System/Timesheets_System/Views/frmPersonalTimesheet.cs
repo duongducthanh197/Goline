@@ -19,6 +19,16 @@ namespace Timesheets_System.Views
             InitializeComponent();
         }
 
+        private void frmPersonalTimesheet_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmInit()
+        {
+
+        }
+
         private void PictureBox1_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -41,5 +51,6 @@ namespace Timesheets_System.Views
                 Location = mousePos;
             }
         }
+
     }
 }

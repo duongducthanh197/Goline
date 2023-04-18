@@ -45,6 +45,10 @@
             this.PictureBox1 = new System.Windows.Forms.PictureBox();
             this.Panel2 = new System.Windows.Forms.Panel();
             this.lbl_Username = new System.Windows.Forms.Label();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.frmDepartment = new System.Windows.Forms.ToolStripMenuItem();
+            this.frmTeam = new System.Windows.Forms.ToolStripMenuItem();
+            this.frmFunction = new System.Windows.Forms.ToolStripMenuItem();
             this.ms_Menu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox1)).BeginInit();
             this.Panel2.SuspendLayout();
@@ -96,6 +100,9 @@
             // 
             this.tsmi_Personnel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.frmEmployeeList,
+            this.frmDepartment,
+            this.toolStripMenuItem1,
+            this.frmTeam,
             this.frmTimesheets,
             this.frmRequest});
             this.tsmi_Personnel.Name = "tsmi_Personnel";
@@ -132,6 +139,7 @@
             // 
             this.tsmi_System.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.frmPermissionGrant,
+            this.frmFunction,
             this.frmChangPassword,
             this.tsmi_Logout});
             this.tsmi_System.Name = "tsmi_System";
@@ -196,6 +204,30 @@
             this.lbl_Username.TabIndex = 0;
             this.lbl_Username.Text = "LOGGED: ";
             // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(194, 22);
+            this.toolStripMenuItem1.Text = "Bộ phận";
+            // 
+            // frmDepartment
+            // 
+            this.frmDepartment.Name = "frmDepartment";
+            this.frmDepartment.Size = new System.Drawing.Size(194, 22);
+            this.frmDepartment.Text = "Danh sách bộ phận";
+            // 
+            // frmTeam
+            // 
+            this.frmTeam.Name = "frmTeam";
+            this.frmTeam.Size = new System.Drawing.Size(194, 22);
+            this.frmTeam.Text = "Danh sách team";
+            // 
+            // frmFunction
+            // 
+            this.frmFunction.Name = "frmFunction";
+            this.frmFunction.Size = new System.Drawing.Size(180, 22);
+            this.frmFunction.Text = "Chức năng";
+            // 
             // frmMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,5 +268,9 @@
         internal System.Windows.Forms.ToolStripMenuItem frmChangPassword;
         internal System.Windows.Forms.PictureBox PictureBox1;
         private System.Windows.Forms.ToolStripMenuItem tsmi_Logout;
+        private System.Windows.Forms.ToolStripMenuItem frmDepartment;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem frmTeam;
+        private System.Windows.Forms.ToolStripMenuItem frmFunction;
     }
 }

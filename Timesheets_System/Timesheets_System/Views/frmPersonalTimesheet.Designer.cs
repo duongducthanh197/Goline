@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPersonalTimesheet));
             this.Panel1 = new System.Windows.Forms.Panel();
             this.DGV_Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -79,9 +79,9 @@
             // DGV_Date
             // 
             this.DGV_Date.DataPropertyName = "Date";
-            dataGridViewCellStyle13.Format = "dd/MM/yyyy";
-            dataGridViewCellStyle13.NullValue = null;
-            this.DGV_Date.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle19.Format = "dd/MM/yyyy";
+            dataGridViewCellStyle19.NullValue = null;
+            this.DGV_Date.DefaultCellStyle = dataGridViewCellStyle19;
             this.DGV_Date.HeaderText = "Ngày";
             this.DGV_Date.MinimumWidth = 6;
             this.DGV_Date.Name = "DGV_Date";
@@ -99,9 +99,9 @@
             // DGV_Checkin
             // 
             this.DGV_Checkin.DataPropertyName = "Checkin";
-            dataGridViewCellStyle14.Format = "dd/MM/yyyy HH:mm:ss";
-            dataGridViewCellStyle14.NullValue = null;
-            this.DGV_Checkin.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle20.Format = "dd/MM/yyyy HH:mm:ss";
+            dataGridViewCellStyle20.NullValue = null;
+            this.DGV_Checkin.DefaultCellStyle = dataGridViewCellStyle20;
             this.DGV_Checkin.HeaderText = "Checkin";
             this.DGV_Checkin.MinimumWidth = 6;
             this.DGV_Checkin.Name = "DGV_Checkin";
@@ -111,8 +111,8 @@
             // DGV_Checkout
             // 
             this.DGV_Checkout.DataPropertyName = "Checkout";
-            dataGridViewCellStyle15.Format = "dd/MM/yyyy HH:mm:ss";
-            this.DGV_Checkout.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle21.Format = "dd/MM/yyyy HH:mm:ss";
+            this.DGV_Checkout.DefaultCellStyle = dataGridViewCellStyle21;
             this.DGV_Checkout.HeaderText = "Checkout";
             this.DGV_Checkout.MinimumWidth = 6;
             this.DGV_Checkout.Name = "DGV_Checkout";
@@ -274,14 +274,14 @@
             this.dgv_TimekeepingDetails.AllowUserToResizeRows = false;
             this.dgv_TimekeepingDetails.BackgroundColor = System.Drawing.SystemColors.ControlLight;
             this.dgv_TimekeepingDetails.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.InactiveCaption;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_TimekeepingDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            dataGridViewCellStyle22.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle22.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.SystemColors.InactiveCaption;
+            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_TimekeepingDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle22;
             this.dgv_TimekeepingDetails.ColumnHeadersHeight = 30;
             this.dgv_TimekeepingDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgv_TimekeepingDetails.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -290,28 +290,28 @@
             this.DGV_Checkin,
             this.DGV_Checkout,
             this.DGV_WorkingHours});
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.Wheat;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv_TimekeepingDetails.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle23.Font = new System.Drawing.Font("Segoe UI Semilight", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.Wheat;
+            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_TimekeepingDetails.DefaultCellStyle = dataGridViewCellStyle23;
             this.dgv_TimekeepingDetails.EnableHeadersVisualStyles = false;
             this.dgv_TimekeepingDetails.GridColor = System.Drawing.SystemColors.ActiveCaption;
             this.dgv_TimekeepingDetails.Location = new System.Drawing.Point(32, 208);
             this.dgv_TimekeepingDetails.Margin = new System.Windows.Forms.Padding(2);
             this.dgv_TimekeepingDetails.Name = "dgv_TimekeepingDetails";
             this.dgv_TimekeepingDetails.ReadOnly = true;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv_TimekeepingDetails.RowHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_TimekeepingDetails.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
             this.dgv_TimekeepingDetails.RowHeadersVisible = false;
             this.dgv_TimekeepingDetails.RowHeadersWidth = 51;
             this.dgv_TimekeepingDetails.RowTemplate.Height = 24;
@@ -412,6 +412,7 @@
             this.Name = "frmPersonalTimesheet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmTimesheetsPersonal";
+            this.Load += new System.EventHandler(this.frmPersonalTimesheet_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_TimekeepingDetails)).EndInit();
